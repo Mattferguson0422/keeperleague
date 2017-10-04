@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 use App\League;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use DB;
 
 class HomeController extends Controller
 {
@@ -25,7 +27,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $leagues = League::all();
+        $user = Auth::User();
+        $leagues = $user->leagues;
 
         return view('home', compact('leagues'));
     }

@@ -20,6 +20,9 @@ class CreateDraftsTable extends Migration
             $table->integer('rounds');
             $table->integer('league_id')->unsigned()->index();
             $table->integer('results_id')->unsigned()->index();
+            $table->integer('turn')->default(0);
+            $table->json('order')->nullable;
+            $table->integer('creator_id');
             $table->timestamps();
         });
     }

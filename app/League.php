@@ -8,6 +8,15 @@ class league extends Model
 
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'join_key', 'member_count',
+    ];
+
+    /**
      * The users that belong to the league
      */
     public function users()
@@ -15,9 +24,7 @@ class league extends Model
         return $this->belongsToMany(User::class);
     }
 
-    /**
-     * The drafts that belong to the league.
-     */
+
     public function drafts()
     {
         return $this->hasMany(Draft::class);

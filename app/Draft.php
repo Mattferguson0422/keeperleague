@@ -13,12 +13,4 @@ class draft extends Model
     {
         return $this->belongsTo(League::class);
     }
-
-    /**
-     * The draft has one set of results.
-     */
-    public function result()
-    {
-        return $this->hasOne(Result::class);
-    }
 }

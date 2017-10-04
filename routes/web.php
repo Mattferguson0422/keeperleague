@@ -18,11 +18,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/dashboard', 'HomeController@index')->name('home');
-//Route::post('/leagues', 'LeaguesController@store');
+
 
 // League Routes
-Route::get('/leagues', 'LeaguesController@index');
-Route::get('/leagues/{league}', 'LeaguesController@show');
+Route::resource('leagues', 'LeaguesController');
+//Route::get('/leagues', 'LeaguesController@index');
+//Route::get('/leagues/{league}', 'LeaguesController@show');
+//Route::post('/leagues', 'LeaguesController@store');
 
 //Draft Routes
 Route::get('/drafts/{draft}', 'DraftsController@show');

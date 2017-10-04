@@ -9,6 +9,20 @@
 
                 <div class="panel-body">
                     <ul>
+                        @if ($league->creator_id == $user->id)
+                            <a href="/leagues/{{ $league->id }}/edit">Edit League</a>
+                            <form action="/leagues/{{ $league->id }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+
+                                <button class="btn btn-primary">Delete</button>
+                            </form>
+                        @endif
+                    </ul>
+                </div>
+
+                <div class="panel-body">
+                    <ul>
                         @foreach ($league->drafts as $draft)
                             <li><a href="/drafts/{{ $draft->id }}">{{ $draft->name  }}</a></li>
                         @endforeach

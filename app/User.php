@@ -40,6 +40,11 @@ class User extends Model implements
      */
     public function leagues()
     {
-        return $this->belongsToMany('App\League');
+        return $this->belongsToMany(League::class);
+    }
+
+    public function addLeague(League $league)
+    {
+        return $this->leagues()->save($league);
     }
 }
