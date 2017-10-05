@@ -22,3 +22,16 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\League::class, function (Faker\Generator $faker) {
+
+    $leagueSize = [8,10,12,14,16];
+    $user = App\User::inRandomOrder()->first();
+
+    return [
+        'name' => $faker->name,
+        'join_key' =>$password = bcrypt('secret'),
+        'member_count' => array_rand($leagueSize),
+        'creator_id' => $user->id
+    ];
+});
