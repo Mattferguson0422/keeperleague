@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\League;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use DB;
 
 
 class LeaguesController extends Controller
@@ -56,9 +58,6 @@ class LeaguesController extends Controller
     public function edit(League $league)
     {
         $user = Auth::user();
-        if($league == null) {
-            dd('hit');
-        }
 
         // Keep all league users from editing the league
         if($league->creator_id == $user->id) {
@@ -76,10 +75,52 @@ class LeaguesController extends Controller
     }
 
     // Delete a specific League
-    public function destroy($league)
+    public function destroy(League $league)
     {
-        League::findOrFail($league)->delete();
+        // Remove all users from league
+        foreach($league->users as $user) {
+            $user->leagues()->detach($league);
+        }
+
+        League::findOrFail($league->id)->delete();
 
         return redirect('/leagues');
+    }
+
+    // Go to Join Page
+    public function join()
+    {
+        return view('leagues.join');
+    }
+
+    public function joinLeague(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'join_key' => 'required'
+        ]);
+
+        $user = $request->user();
+        $name = $request->name;
+        $join_key = $request->join_key;
+
+        $league = League::where('name', $name)->first();
+
+        if($league == null || !Hash::check($join_key,$league->join_key)) {
+            return back();
+        } else {
+            $user->addLeague($league);
+            return redirect("/leagues/$league->id");
+        }
+    }
+
+    // Remove user from a specific league
+    public function leave(Request $request, League $league)
+    {
+        $user = Auth::user();
+
+        $user->removeLeague($league);
+
+        return redirect('/dashboard');
     }
 }

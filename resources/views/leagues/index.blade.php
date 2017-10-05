@@ -10,16 +10,6 @@
                     <ul>
                         @foreach($leagues as $league)
                             <li><a href="/leagues/{{ $league->id }}">{{ $league->name }}</a>
-                                    <div class="button-group">
-                                    @if($user->id == $league->creator_id)
-                                        <a href="/leagues/{{ $league->id }}/edit">Edit</a>
-                                            <form action="/leagues/{{ $league->id }}" method="POST">
-                                                {{ csrf_field() }}
-                                                {{ method_field('DELETE') }}
-                                                <button>Delete</button>
-                                            </form>
-                                    @endif
-                                    </div>
                             </li>
                         @endforeach
                     </ul>

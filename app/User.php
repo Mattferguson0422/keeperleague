@@ -47,4 +47,9 @@ class User extends Model implements
     {
         return $this->leagues()->save($league);
     }
+
+    public function removeLeague(League $league)
+    {
+        return $this->leagues()->detach($league);
+    }
 }

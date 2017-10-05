@@ -5,6 +5,18 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2>{{ $league->name  }}</h2>
+                    @if ($league->creator_id != $user->id)
+                    <form action="/leagues/{{ $league->id }}/leave" method="post">
+
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+
+                        <button class="btn btn-primary">Leave this league</button>
+                    </form>
+                    @endif
+                </div>
                 <div class="panel-heading">League Drafts</div>
 
                 <div class="panel-body">

@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Leagues <a href="/leagues/create">Create a new League</a></div>
+                <div class="panel-heading">Leagues <a href="/leagues">Manage Leagues</a></div>
 
                 <div class="panel-body">
                     @if (session('status'))

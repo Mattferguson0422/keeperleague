@@ -21,10 +21,10 @@ Route::get('/dashboard', 'HomeController@index')->name('home');
 
 
 // League Routes
+Route::get('leagues/join','LeaguesController@join');
 Route::resource('leagues', 'LeaguesController');
-//Route::get('/leagues', 'LeaguesController@index');
-//Route::get('/leagues/{league}', 'LeaguesController@show');
-//Route::post('/leagues', 'LeaguesController@store');
+Route::delete("leagues/{league}/leave", 'LeaguesController@leave');
+Route::post("leagues/join",'LeaguesController@joinLeague');
 
 //Draft Routes
 Route::get('/drafts/{draft}', 'DraftsController@show');
