@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\League;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use DB;
 
 
 class LeaguesController extends Controller
@@ -23,7 +23,12 @@ class LeaguesController extends Controller
     public function show(League $league)
     {
         $user = Auth::user();
-        return view('leagues.show', compact('league', 'user'));
+        if($user->inLeague($league)) {
+            return view('leagues.show', compact('league', 'user'));
+        } else {
+
+            return redirect('/dashboard');
+        }
     }
 
     // Create a League
@@ -39,7 +44,7 @@ class LeaguesController extends Controller
             'name' => 'required|unique:leagues'
         ]);
 
-        $user = Auth::user();
+        $user = $request->user();
         $league = new League;
 
         $league->name = $request->name;
@@ -51,6 +56,8 @@ class LeaguesController extends Controller
 
         $user->addLeague($league);
 
+        session()->flash('message', 'Your League has been added');
+
         return redirect("/leagues/$league->id");
     }
 
@@ -60,7 +67,7 @@ class LeaguesController extends Controller
         $user = Auth::user();
 
         // Keep all league users from editing the league
-        if($league->creator_id == $user->id) {
+        if($user->isCreator($league)) {
             return view('leagues.edit', compact('league', 'user'));
         } else {
             return back();
@@ -71,6 +78,8 @@ class LeaguesController extends Controller
     public function update(Request $request, League $league)
     {
         $league->update($request->all());
+
+        session()->flash('message', "$league->name has been updated");
         return redirect("/leagues/$league->id");
     }
 
@@ -84,7 +93,9 @@ class LeaguesController extends Controller
 
         League::findOrFail($league->id)->delete();
 
-        return redirect('/leagues');
+        session()->flash('message', "Your league has been removed");
+
+        return redirect('/dashboard');
     }
 
     // Go to Join Page
@@ -100,16 +111,31 @@ class LeaguesController extends Controller
             'join_key' => 'required'
         ]);
 
-        $user = $request->user();
+        $user = Auth::user();
         $name = $request->name;
         $join_key = $request->join_key;
 
         $league = League::where('name', $name)->first();
 
         if($league == null || !Hash::check($join_key,$league->join_key)) {
+
+            session()->flash('alarm', "Sorry, your credentials do not match, please check with your league creator");
+
             return back();
+        } elseif($user->inLeague($league)) {
+
+            session()->flash('alarm', "Sorry, you are already in this league");
+            return back();
+
+        } elseif($league->member_count == count($league->users)) {
+
+            session()->flash('alarm', "This league is currently full, please contact league creator");
+            return back();
+
         } else {
             $user->addLeague($league);
+
+            session()->flash('message', "You joined $league->name");
             return redirect("/leagues/$league->id");
         }
     }
@@ -117,10 +143,21 @@ class LeaguesController extends Controller
     // Remove user from a specific league
     public function leave(Request $request, League $league)
     {
-        $user = Auth::user();
+        $user = $request->user();
 
-        $user->removeLeague($league);
+        if($user->isCreator($league)) {
+            $player = User::find($request->player_id);
+            $player->removeLeague($league);
 
-        return redirect('/dashboard');
+            session()->flash('message', "You removed $player->name");
+
+            return back();
+        } else {
+            $user->removeLeague($league);
+
+            session()->flash('message', "You left $league->name");
+
+            return redirect('/dashboard');
+        }
     }
 }

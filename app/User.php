@@ -52,4 +52,24 @@ class User extends Model implements
     {
         return $this->leagues()->detach($league);
     }
+
+    public function inLeague($league)
+    {
+        $members = [];
+
+        foreach($league->users as $member) {
+            $members[] = $member->id;
+        }
+
+        if(in_array($this->id, $members)) {
+            return true;
+        }
+    }
+
+    public function isCreator($created)
+    {
+        if($this->id == $created->creator_id) {
+            return true;
+        }
+    }
 }

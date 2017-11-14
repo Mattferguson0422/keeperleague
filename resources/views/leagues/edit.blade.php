@@ -30,7 +30,23 @@
 
                 <div class="panel-body">
                     <ul>
+                        @foreach ($league->users as $player)
+                            @if($user->id != $player->id)
+                        <li>
 
+                            {{ $player->name  }}
+
+                            <form action="/leagues/{{ $league->id }}/leave" method="post">
+                                <input type="hidden" name="player_id" value="{{$player->id}}">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+
+                                <button class="btn btn-primary">Remove</button>
+                            </form>
+
+                        </li>
+                            @endif
+                        @endforeach
                     </ul>
                 </div>
 

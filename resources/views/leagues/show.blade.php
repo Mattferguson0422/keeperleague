@@ -21,7 +21,7 @@
 
                 <div class="panel-body">
                     <ul>
-                        @if ($league->creator_id == $user->id)
+                        @if ($user->isCreator($league))
                             <a href="/leagues/{{ $league->id }}/edit">Edit League</a>
                             <form action="/leagues/{{ $league->id }}" method="post">
                                 {{ csrf_field() }}
@@ -45,8 +45,10 @@
 
                 <div class="panel-body">
                     <ul>
-                        @foreach ($league->users as $user)
-                            <li>{{ $user->name  }}</li>
+                        @foreach ($league->users as $player)
+                            <li>
+                                {{ $player->name  }}
+                            </li>
                         @endforeach
                     </ul>
                 </div>
