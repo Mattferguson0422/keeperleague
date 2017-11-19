@@ -26,12 +26,13 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\League::class, function (Faker\Generator $faker) {
 
     $leagueSize = [8,10,12,14,16];
+    shuffle($leagueSize);
     $user = App\User::inRandomOrder()->first();
 
     return [
-        'name' => $faker->name,
+        'name' => 'Test ' . $faker->domainWord,
         'join_key' =>$password = bcrypt('secret'),
-        'member_count' => array_rand($leagueSize),
+        'member_count' => $leagueSize[0],
         'creator_id' => $user->id
     ];
 });
