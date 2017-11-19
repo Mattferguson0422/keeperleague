@@ -17,7 +17,7 @@
                     </form>
                     @endif
                 </div>
-                <div class="panel-heading">League Drafts</div>
+                <div class="panel-heading">League Settings</div>
 
                 <div class="panel-body">
                     <ul>
@@ -29,10 +29,12 @@
 
                                 <button class="btn btn-primary">Delete</button>
                             </form>
+
+                            <a href="/drafts/create">Create a new draft</a>
                         @endif
                     </ul>
                 </div>
-
+                <div class="panel-heading">League Drafts</div>
                 <div class="panel-body">
                     <ul>
                         @foreach ($league->drafts as $draft)

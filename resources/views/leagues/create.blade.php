@@ -23,7 +23,7 @@
                             <input type="number" name="member_count" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <button type="submit" name="button" id="member_count" class="btn btn-primary">Create League</button>
+                            <button type="submit" name="button" class="btn btn-primary">Create League</button>
                         </div>
                     </form>
                 </div>

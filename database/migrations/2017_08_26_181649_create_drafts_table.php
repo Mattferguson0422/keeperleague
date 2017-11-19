@@ -16,7 +16,7 @@ class CreateDraftsTable extends Migration
         Schema::create('drafts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('participants');
+            $table->string('sport');
             $table->integer('rounds');
             $table->integer('league_id')->unsigned()->index();
             $table->integer('results_id')->unsigned()->index();

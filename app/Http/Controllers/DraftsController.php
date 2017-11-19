@@ -17,6 +17,12 @@ class DraftsController extends Controller
         $this->middleware('auth');
     }
 
+    // Create a Draft
+    public function create()
+    {
+        return view('drafts.create');
+    }
+
     // Show a specific Draft Board
     public function show(Draft $draft)
     {

@@ -27,7 +27,8 @@ Route::delete("leagues/{league}/leave", 'LeaguesController@leave');
 Route::post("leagues/join",'LeaguesController@joinLeague');
 
 //Draft Routes
-Route::get('/drafts/{draft}', 'DraftsController@show');
+//Route::get('/drafts/{draft}', 'DraftsController@show');
+Route::resource('drafts', 'DraftsController');
 Route::get('autocomplete',array('as'=>'autocomplete','uses'=>'SearchController@autocomplete'));
 
 
