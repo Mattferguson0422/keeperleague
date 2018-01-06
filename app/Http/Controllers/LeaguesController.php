@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Hash;
 class LeaguesController extends Controller
 {
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     // Show all leagues for User;
     public function index()
     {
@@ -41,7 +51,7 @@ class LeaguesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:leagues'
+            'name' => 'required'
         ]);
 
         $user = $request->user();

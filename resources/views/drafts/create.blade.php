@@ -8,7 +8,7 @@
                 <div class="panel-heading">Create new Draft</div>
 
                 <div class="panel-body">
-                    <form action="/drafts" method="post">
+                    <form action="/leagues/{{ $leagueId }}/drafts" method="post">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="name">Name of Draft</label>
@@ -18,23 +18,22 @@
                             <label for="sport">Sport</label>
                             <select name="sport" id="sport" class="form-control" required>
                                 <option value="">Select</option>
-                                <option value="nfl">NFL</option>
-                                <option value="mlb">MLB</option>
+                                <option value="1">MLB</option>
+                                <option value="2">NFL</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="rounds">How many Rounds?</label>
                             <input type="number" name="rounds" id="rounds" class="form-control" required>
                         </div>
-                        <p>Verify Draft Order</p>
+
                         <div class="form-group">
-                            <label for="selected_round">Round</label>
-                            <select name="selected_round" id="selected_round" class="form-control" required>
-                            </select>
+                            <label for="teams">How many Teams?</label>
+                            <input type="number" name="teams" id="teams" class="form-control" required>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" name="button" class="btn btn-primary">Create Draft</button>
+                            <button type="submit" name="button" class="btn btn-primary">Continue</button>
                         </div>
                     </form>
                 </div>

@@ -28,7 +28,9 @@ Route::post("leagues/join",'LeaguesController@joinLeague');
 
 //Draft Routes
 //Route::get('/drafts/{draft}', 'DraftsController@show');
-Route::resource('drafts', 'DraftsController');
+//Route::resource('drafts', 'DraftsController');
+Route::resource('leagues.drafts', 'DraftsController');
+Route::get("drafts/{draft}/order", 'DraftsController@order');
 Route::get('autocomplete',array('as'=>'autocomplete','uses'=>'SearchController@autocomplete'));
 
 

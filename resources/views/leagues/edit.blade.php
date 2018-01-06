@@ -12,13 +12,16 @@
                         {{ method_field('PATCH') }}
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <input type="text" name="name" class="form-control" value="{{ $league->name }}">
+                            <label for="name">League Name</label>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ $league->name }}">
                         </div>
                         <div class="form-group">
-                            <input type="text" name="join_key" class="form-control" value="{{ $league->join_key }}">
+                            <label for="join_key">Join Key</label>
+                            <input type="password" name="join_key" id="join_key" class="form-control" value="{{ $league->join_key }}">
                         </div>
                         <div class="form-group">
-                            <input type="number" name="member_count" class="form-control" value="{{ $league->member_count }}">
+                            <label for="member_count">Member Count</label>
+                            <input type="number" name="member_count" id="member_count" class="form-control" value="{{ $league->member_count }}">
                         </div>
                         <div class="form-group">
                             <button type="submit" name="button" class="btn btn-primary">Update League</button>

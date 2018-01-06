@@ -30,7 +30,7 @@
                                 <button class="btn btn-primary">Delete</button>
                             </form>
 
-                            <a href="/drafts/create">Create a new draft</a>
+                            <a href="/leagues/{{ $league->id }}/drafts/create">Create a new draft</a>
                         @endif
                     </ul>
                 </div>
