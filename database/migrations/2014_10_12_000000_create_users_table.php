@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
         $user = new App\User;
         $user->name = "Matty";
         $user->email = "mattferguson0422@gmail.com";
-        $user->password = bcrypt("secret");
+        $user->password = bcrypt("Kidney88");
         $user->save();
     }
 

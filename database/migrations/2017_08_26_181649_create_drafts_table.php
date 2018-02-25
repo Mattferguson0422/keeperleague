@@ -16,12 +16,11 @@ class CreateDraftsTable extends Migration
         Schema::create('drafts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('sport');
+            $table->string('sport');
             $table->integer('rounds');
             $table->integer('teams');
+            $table->string('draft_type');
             $table->integer('league_id')->unsigned()->index();
-            $table->integer('turn')->default(0);
-            $table->json('order')->nullable;
             $table->integer('creator_id');
             $table->timestamps();
         });

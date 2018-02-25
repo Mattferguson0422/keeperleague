@@ -51,14 +51,16 @@ class LeaguesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'join_key' => 'required',
+            'member_count' => 'required|min:1|numeric'
         ]);
 
         $user = $request->user();
         $league = new League;
 
         $league->name = $request->name;
-        $league->join_key = bcrypt($request->join_key);
+        $league->join_key = $request->join_key;
         $league->member_count = $request->member_count;
         $league->creator_id = $user->id;
 
@@ -114,6 +116,7 @@ class LeaguesController extends Controller
         return view('leagues.join');
     }
 
+    // Join a League
     public function joinLeague(Request $request)
     {
         $this->validate($request, [
@@ -127,7 +130,7 @@ class LeaguesController extends Controller
 
         $league = League::where('name', $name)->first();
 
-        if($league == null || !Hash::check($join_key,$league->join_key)) {
+        if($league == null || $join_key != $league->join_key) {
 
             session()->flash('alarm', "Sorry, your credentials do not match, please check with your league creator");
 

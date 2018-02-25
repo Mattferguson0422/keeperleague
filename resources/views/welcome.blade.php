@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Draft Software
+                    Draft Your Way
                 </div>
 
             </div>

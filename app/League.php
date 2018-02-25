@@ -24,7 +24,9 @@ class league extends Model
         return $this->belongsToMany(User::class);
     }
 
-
+    /**
+     * The League has many Drafts
+     */
     public function drafts()
     {
         return $this->hasMany(Draft::class);

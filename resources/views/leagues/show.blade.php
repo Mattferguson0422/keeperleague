@@ -38,7 +38,7 @@
                 <div class="panel-body">
                     <ul>
                         @foreach ($league->drafts as $draft)
-                            <li><a href="/drafts/{{ $draft->id }}">{{ $draft->name  }}</a></li>
+                            <li><a href="/leagues/{{ $league->id }}/drafts/{{ $draft->id }}">{{ $draft->name  }}</a></li>
                         @endforeach
                     </ul>
                 </div>

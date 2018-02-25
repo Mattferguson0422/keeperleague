@@ -27,10 +27,11 @@ Route::delete("leagues/{league}/leave", 'LeaguesController@leave');
 Route::post("leagues/join",'LeaguesController@joinLeague');
 
 //Draft Routes
-//Route::get('/drafts/{draft}', 'DraftsController@show');
-//Route::resource('drafts', 'DraftsController');
 Route::resource('leagues.drafts', 'DraftsController');
+Route::get("drafts/{draft}/participants", 'DraftsController@participants');
+Route::patch("drafts/{draft}/participants", 'DraftsController@addParticipants');
 Route::get("drafts/{draft}/order", 'DraftsController@order');
+Route::patch("drafts/{draft}/order", 'DraftsController@changeOrder');
 Route::get('autocomplete',array('as'=>'autocomplete','uses'=>'SearchController@autocomplete'));
 
 
