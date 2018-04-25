@@ -119,29 +119,46 @@ class DraftsController extends Controller
     // Store Draft Participants
     public function addParticipants(Request $request, Draft $draft)
     {
-        // Set up arrays for validation
-        $validUsers = [];
-        foreach($draft->league->users as $user) {
-            $validUsers[] = $user->id;
+        $user = Auth::user();
+        $results = Result::where('draft_id',$draft->id)->get();
+        $rawData = $request->all();
+
+        // Split data to team names and owners
+        $team_names = [];
+        $owner_ids = [];
+
+        // For request->all, remove _method,_token, and button from the list to leave only the picks and owners.
+        $count = 0;
+        foreach($rawData as $key=>$data) {
+            if($key != 'button' && substr($key,0,1) != '_' ) {
+
+                // if the result is even add it to the team_name array
+                // if the result is odd add i to the owner_id array
+                if($count % 2 == 0) {
+                    $team_names[] = $data;
+                } else {
+                    $owner_ids[] = $data;
+                }
+
+                $count ++;
+            }
         }
 
-        $validPicks = [];
-        $picks = Result::where('draft_id', $draft->id);
-        foreach($picks as $pick) {
-            $validPicks[] = $pick->id;
+        // Go through each team_name and add it's name plus the owners id
+        $teams = [];
+        for($i = 0; $i < count($team_names); $i++) {
+            $object = new \stdClass();
+
+            $object->team_name = $team_names[$i];
+            $object->owner_id = $owner_ids[$i];
+
+            $teams[] = $object;
         }
 
-        $this->validate($request, [
-            'pick' => 'required|string',
-            'owner_id' => "required|numeric",//|in_array:$validUsers",
-            'position' => "required|numeric"//|in_array:$validPicks",
-        ]);
+        dd($teams);
 
         // Update Result
-        $result = Result::find($request->position);
-        $result->pick = $request->pick;
-        $result->owner_id = $result->owner_id;
-        $result->update();
+
 
         session()->flash('message', 'Please enter your missing participants.'); // You are here
 

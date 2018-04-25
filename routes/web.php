@@ -30,8 +30,8 @@ Route::post("leagues/join",'LeaguesController@joinLeague');
 Route::resource('leagues.drafts', 'DraftsController');
 Route::get("drafts/{draft}/participants", 'DraftsController@participants');
 Route::patch("drafts/{draft}/participants", 'DraftsController@addParticipants');
-Route::get("drafts/{draft}/order", 'DraftsController@order');
-Route::patch("drafts/{draft}/order", 'DraftsController@changeOrder');
+
+// Route that will be used to autocomplete draft picks in a live draft setting
 Route::get('autocomplete',array('as'=>'autocomplete','uses'=>'SearchController@autocomplete'));
 
 

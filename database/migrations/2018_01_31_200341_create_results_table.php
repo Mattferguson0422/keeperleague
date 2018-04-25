@@ -15,6 +15,7 @@ class CreateResultsTable extends Migration
     {
         Schema::create('results', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('team_name');
             $table->string('pick');
             $table->integer('draft_id')->unsigned()->index();
             $table->integer('round');

@@ -43,6 +43,7 @@ class draft extends Model
             for ($p = 1; $p <= $draft->teams; $p++) {
 
                 $result = new Result;
+                $result->team_name = "Enter Team Name";
                 $result->pick = "Round $i Pick $p";
                 $result->draft_id = $draft->id;
                 $result->round = $i;

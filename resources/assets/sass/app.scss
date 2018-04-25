@@ -128,3 +128,20 @@
     }
   }
 }
+
+
+// Sortable setting of participants
+#sortable li {
+  border: 1px solid #5e5e5e;
+  max-width: 340px;
+  position: relative;
+
+  span {
+    @include centered(false);
+    right: 10px;
+
+    &:hover {
+      cursor: ns-resize;
+    }
+  }
+}
