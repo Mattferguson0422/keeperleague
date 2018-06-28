@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Player;
+
 use App\League;
 use App\Draft;
 use App\Result;
@@ -26,6 +26,16 @@ class DraftsController extends Controller
         return view('drafts.create', compact('leagueId'));
     }
 
+    // Show a specific Draft Board
+    public function show($leagueId, $draftId)
+    {
+        $league = League::findOrFail($leagueId);
+        $draft = Draft::findOrFail($draftId);
+        $users = $league->users->all();
+
+        return view('drafts.show', compact('draft','users'));
+    }
+
     // Store a Draft
     public function store(Request $request, $leagueId)
     {
@@ -37,7 +47,7 @@ class DraftsController extends Controller
         ]);
 
         $user = $request->user();
-        $league = League::find($leagueId);
+        $league = League::findorFail($leagueId);
 
         if($user->isCreator($league)) {
 
@@ -85,7 +95,7 @@ class DraftsController extends Controller
 
         $draft->update();
 
-        session()->flash('message', 'Please enter your missing participants.');
+        session()->flash('message', 'Please enter team names and draft order');
 
         return redirect("/drafts/$draft->id/participants");
     }
@@ -108,7 +118,7 @@ class DraftsController extends Controller
                 $picks = Result::where('draft_id',$draft->id)->get();
             }
 
-            return view('drafts.participants', compact('draft', 'picks', 'members'));
+            return view('drafts.participants', compact( 'draft','picks', 'members'));
 
         } else {
             return back();
@@ -120,58 +130,50 @@ class DraftsController extends Controller
     public function addParticipants(Request $request, Draft $draft)
     {
         $user = Auth::user();
-        $results = Result::where('draft_id',$draft->id)->get();
-        $rawData = $request->all();
+        $leagueId = $draft->league->id;
 
-        // Split data to team names and owners
-        $team_names = [];
-        $owner_ids = [];
+        if($user->id == $draft->creator_id) {
+            $rawData = $request->all();
 
-        // For request->all, remove _method,_token, and button from the list to leave only the picks and owners.
-        $count = 0;
-        foreach($rawData as $key=>$data) {
-            if($key != 'button' && substr($key,0,1) != '_' ) {
+            // Split data to team names and owners
+            $team_names = [];
+            $owner_ids = [];
 
-                // if the result is even add it to the team_name array
-                // if the result is odd add i to the owner_id array
-                if($count % 2 == 0) {
-                    $team_names[] = $data;
-                } else {
-                    $owner_ids[] = $data;
+            // For request->all, remove _method,_token, and button from the list to leave only the picks and owners.
+            $count = 0;
+            foreach ($rawData as $key => $data) {
+                if ($key != 'button' && substr($key, 0, 1) != '_') {
+
+                    // if the result is even add it to the team_name array
+                    // if the result is odd add i to the owner_id array
+                    if ($count % 2 == 0) {
+                        $team_names[] = $data;
+                    } else {
+                        $owner_ids[] = $data;
+                    }
+
+                    $count++;
                 }
-
-                $count ++;
             }
+
+            // Go through each team_name and add it's name plus the owners id
+            $teams = [];
+            for ($i = 0; $i < count($team_names); $i++) {
+                $object = new \stdClass();
+
+                $object->team_name = $team_names[$i];
+                $object->owner_id = $owner_ids[$i];
+
+                $teams[] = $object;
+            }
+
+            if($draft->draft_type == 'snake') $draft->createSnakeDraft($teams);
+            if($draft->draft_type == 'straight') $draft->createStraightDraft($teams);
+
+            session()->flash('message', 'Your picks have been set');
+
+            return redirect("/leagues/$leagueId/drafts/$draft->id");
+
         }
-
-        // Go through each team_name and add it's name plus the owners id
-        $teams = [];
-        for($i = 0; $i < count($team_names); $i++) {
-            $object = new \stdClass();
-
-            $object->team_name = $team_names[$i];
-            $object->owner_id = $owner_ids[$i];
-
-            $teams[] = $object;
-        }
-
-        dd($teams);
-
-        // Update Result
-
-
-        session()->flash('message', 'Please enter your missing participants.'); // You are here
-
-        return back();
     }
-
-    // Show a specific Draft Board
-    public function show($leagueId, $draftId)
-    {
-        $draft = Draft::find($draftId);
-        $users = $draft->league->users;
-
-        return view('drafts.show', compact('draft','users'));
-    }
-
 }

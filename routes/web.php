@@ -34,7 +34,3 @@ Route::patch("drafts/{draft}/participants", 'DraftsController@addParticipants');
 // Route that will be used to autocomplete draft picks in a live draft setting
 Route::get('autocomplete',array('as'=>'autocomplete','uses'=>'SearchController@autocomplete'));
 
-
-// Results
-//Route::get('/results', 'ResultsController@index');
-Route::patch('/drafts/{draft}/results', 'ResultsController@update');

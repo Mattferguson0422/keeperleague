@@ -1,5 +1,5 @@
 @extends('layouts.app')
-{{ dd($draft->order) }}
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -25,19 +25,28 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">Draft Order</div>
                 <div class="panel-body">
-                    <h3>Round</h3>
-                    <ol>
-                        @for($i = 1; $i <= $draft->rounds; $i++)
-                        <li>
-                        </li>
-                        @endfor
-                    </ol>
-                    @if(Auth::User()->id == $draft->creator_id)
-                    <a href="/drafts/{{ $draft->id }}/order" class="btn btn-primary">Change Order</a>
-                    @endif
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select class="form-control" id="round-pick">
+                                <option value="">Select Round</option>
+
+                                @for($i = 1; $i <= $draft->rounds; $i++)
+                                    <option value="{{$i}}">Round {{$i}}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-med-6">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script>
+    $('select#round-pick').change(function() {
+    });
+</script>
 @endsection

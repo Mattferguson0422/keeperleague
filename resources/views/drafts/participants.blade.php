@@ -10,22 +10,23 @@
                     <p>Enter draft teams, drag & drop into order, select owner</p>
                 </div>
                 <div class="panel-body">
+
                     <form action="/drafts/{{ $draft->id }}/participants" method="post" id="participants">
                         {{ method_field('PATCH') }}
                         {{ csrf_field() }}
                         <h2>Enter Team Names</h2>
                         <ol id="sortable">
-                        @for($i = 1; $i <= count($picks); $i++)
+                        @foreach($picks as $key => $pick)
                             <li class="form-group ui-state-default">
-                                <input type="text" name="team_{{ $i }}" value="team_{{ $i }}">
-                                <select name="client_id_{{ $i }}">
+                                <input type="text" name="team_{{ $key }}" value="{{$pick->team_name}}">
+                                <select name="client_id_{{ $key }}">
                                     @foreach($members as $member)
                                         <option value="{{ $member->id }}">{{ $member->name }}</option>
                                     @endforeach
                                 </select>
                                 <span class="glyphicon glyphicon-th"></span>
                             </li>
-                        @endfor
+                        @endforeach
                         </ol>
                         <div class="form-group">
                             <button type="submit" name="button" class="btn btn-primary">Set Order</button>
